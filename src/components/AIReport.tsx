@@ -2,14 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Copy, Check, RotateCcw, AlertCircle, Key, Eye, EyeOff, ExternalLink } from 'lucide-react';
+import { DatasetType } from '../utils/columnDetection';
 
 interface AIReportProps {
   payload: any;
+  datasetType?: DatasetType;
 }
 
 const API_KEY_STORAGE_KEY = 'gemini_api_key';
 
-export default function AIReport({ payload }: AIReportProps) {
+export default function AIReport({ payload, datasetType = 'GENERIC' }: AIReportProps) {
   const [report, setReport] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -260,9 +262,17 @@ export default function AIReport({ payload }: AIReportProps) {
           <div className="p-4 rounded-full bg-indigo-500/10 text-indigo-400 mb-5 animate-pulse">
             <Sparkles className="w-10 h-10" />
           </div>
-          <h3 className="text-xl font-bold text-slate-100 mb-2">Báo cáo phân tích kinh doanh tự động</h3>
+          <h3 className="text-xl font-bold text-slate-100 mb-2">
+            {datasetType === 'HR_WORKFORCE' ? 'Báo cáo phân tích Nhân sự (HR Analytics)' :
+             datasetType === 'SALES_FINANCE' ? 'Báo cáo phân tích Kinh doanh' :
+             'Báo cáo phân tích Dữ liệu'}
+          </h3>
           <p className="text-slate-400 text-sm mb-6 max-w-md">
-            Sử dụng trí tuệ nhân tạo Google Gemini API để tạo nhận xét toàn diện về doanh thu, chi phí, rủi ro và các giải pháp hành động cụ thể chỉ trong vài giây.
+            {datasetType === 'HR_WORKFORCE'
+              ? 'AI sẽ phân tích cơ cấu nhân sự, rủi ro nghỉ việc, hiệu suất và đề xuất hành động cho HR Manager.'
+              : datasetType === 'SALES_FINANCE'
+              ? 'AI sẽ phân tích doanh thu, chi phí, lợi nhuận và đề xuất chiến lược kinh doanh.'
+              : 'AI sẽ phân tích cấu trúc dữ liệu, phân phối và đề xuất insight chuyên sâu.'}
           </p>
           <button
             onClick={saveAndGenerate}

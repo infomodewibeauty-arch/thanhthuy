@@ -181,13 +181,7 @@ export function cleanExcelData(rawRows: any[]): {
     }
   });
 
-  // Check critical columns missing and generate warnings
-  if (!mappedStandardKeys.has('revenue')) {
-    warnings.push('Chưa tìm thấy cột doanh thu. Hệ thống vẫn hiển thị bảng dữ liệu nhưng một số KPI tài chính sẽ bị ẩn.');
-  }
-  if (!mappedStandardKeys.has('date')) {
-    warnings.push('Chưa tìm thấy cột ngày tháng. Phân tích xu hướng theo thời gian sẽ bị hạn chế.');
-  }
+  // No hardcoded revenue/date warnings — dataset type detection handles this in analyticsEngine
 
   // 2. Clean data row by row
   const cleanRows: any[] = [];
